@@ -1,0 +1,26 @@
+
+note over selain:
+selain alkaa suorittaa js-koodia
+joka lähettää JSON-datan palvelimelle
+end note
+
+selain->palvelin: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note_spa
+
+note over palvelin:
+muutokset tallentuu palvelimella
+end note
+
+palvelin-->selain: HTTP Response 201, [{message: "note created"}]
+
+note over selain:
+selain vastaanottaa HTTP Responsin palvelimelta
+ja JS koodi pyytää palvelinta lähettämään JSON-datan
+end note
+
+selain->palvelin: HTTP GET https://fullstack-exampleapp.herokuapp.com/data.json
+palvelin-->selain: [{ content: "HTML on helppoa", date: "2017-12-10T17:30:31.098Z" }, ...]
+
+note over selain:
+selain suorittaa tapahtumankäsittelijän
+joka renderöi muistiinpanot näytölle
+end note
