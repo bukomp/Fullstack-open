@@ -18,6 +18,16 @@ const App = () => {
     )
   };
 
+  const Part = (props) => {
+    const printline = props.parts +" "+ props.exercise;
+    return (
+      <React.Fragment>
+        {printline}
+        <br/>
+      </React.Fragment>
+     );
+  };
+
   const Content = (props) => {
 
     const exerciseArr = [];
@@ -27,13 +37,13 @@ const App = () => {
       const parts = props.parts[i];
       (props.exercises[i] === undefined || props.exercises[i] === null)? exercise = 0 : exercise = props.exercises[i];
 
-      exerciseArr.push(<p key={i}>{parts} {exercise}</p>)
+      exerciseArr.push(<Part key={i} parts={parts} exercise={exercise}/>)
     }
 
     return(
-      <React.Fragment>
+      <div>
         {exerciseArr}
-      </React.Fragment>
+      </div>
     );
   };
 
