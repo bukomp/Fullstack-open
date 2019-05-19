@@ -3,18 +3,20 @@ import ReactDOM from 'react-dom'
 
 const App = () => {
   const course = 'Half Stack -sovelluskehitys';
-  const part1 = {
+  const parts = [
+    {
     name: 'Reactin perusteet',
     exercises: 10
-  };
-  const part2 = {
+    },
+    {
     name: 'Tiedonvälitys propseilla',
     exercises: 7
-  };
-  const part3 = {
+    },
+    {
     name: 'Komponenttien tila',
     exercises: 14
-  };
+    }
+  ];
 
   const Header = (props) => {
     return(
@@ -56,8 +58,8 @@ const App = () => {
   const Total = (props) => {
 
     let totalExercises = 0;
-    for(let g of props.exercises){
-      totalExercises += g;
+    for(let g of props.parts){
+      totalExercises += g.exercises;
     }
 
     return(
@@ -70,8 +72,8 @@ const App = () => {
   return (
     <div>
       <Header course={course} />
-      <Content parts={[part1, part2, part3]}/>
-      <Total exercises={[part1.exercises, part2.exercises, part3.exercises]} />
+      <Content parts={parts}/>
+      <Total parts={parts} />
     </div>
   )
 };
