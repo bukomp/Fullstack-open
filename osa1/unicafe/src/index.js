@@ -52,6 +52,7 @@ const App = () => {
     setBad(bad+1);
   };
 
+
 //for debugging purposes
   useEffect(()=>{
     console.clear();
