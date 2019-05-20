@@ -1,31 +1,44 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
 const ButtonBoard = (props) => {
   return(
     <div>
-      <h2>anna palautetta</h2>
-      <button onClick={props.addGood}>hyvä</button>
-      <button onClick={props.addNeutral}>neutraali</button>
-      <button onClick={props.addBad}>huono</button>
+      <h2>{props.text}</h2>
+      <Button handleClick={props.addGood} text={"hyvä"}/>
+      <Button handleClick={props.addNeutral} text={"neutraali"}/>
+      <Button handleClick={props.addBad} text={"huono"}/>
     </div>
   );
 };
+
+const Button = (props) => <button onClick={props.handleClick}>{props.text}</button>;
+
+const Statistic = (props) => (
+  <tr>
+    <td>{props.text}</td>
+    <td>{props.value}</td>
+  </tr>
+);
 
 const Statistics = (props) => {
   return(
     <React.Fragment>
       {
         (props.good || props.neutral || props.bad) !== 0 &&
-        <div>
-          <h2>statistiikka</h2>
-          <p>hyvä {props.good}</p>
-          <p>neutraali {props.neutral}</p>
-          <p>huono {props.bad}</p>
-          <p>yhteensä {props.good + props.neutral + props.bad}</p>
-          <p>keskiarvo {(props.good - props.bad) / (props.good + props.neutral + props.bad)}</p>
-          <p>positiivisia {((props.good / (props.good + props.neutral + props.bad)) * 100) + "%"}</p>
-        </div>
+        <React.Fragment>
+          <h2>{props.text}</h2>
+          <table>
+            <tbody>
+              <Statistic text={"hyvä"} value={props.good}/>
+              <Statistic text={"neutraali"} value={props.neutral}/>
+              <Statistic text={"huono"} value={props.bad}/>
+              <Statistic text={"yhteensä"} value={props.good + props.neutral + props.bad}/>
+              <Statistic text={"keskiarvo"} value={(props.good - props.bad) / (props.good + props.neutral + props.bad)}/>
+              <Statistic text={"positiivisia"} value={((props.good / (props.good + props.neutral + props.bad)) * 100) + "%"}/>
+            </tbody>
+          </table>
+        </React.Fragment>
       }
       {
         (props.good || props.neutral || props.bad) === 0 &&
@@ -50,19 +63,10 @@ const App = () => {
     setBad(bad+1);
   };
 
-
-//for debugging purposes
-  useEffect(()=>{
-    console.clear();
-    console.log(good);
-    console.log(neutral);
-    console.log(bad);
-  });
-
   return (
     <div>
-      <ButtonBoard addGood={addGood} addNeutral={addNeutral} addBad={addBad}/>
-      <Statistics good={good} neutral={neutral} bad={bad}/>
+      <ButtonBoard addGood={addGood} addNeutral={addNeutral} addBad={addBad} text={"anna palautetta"}/>
+      <Statistics good={good} neutral={neutral} bad={bad} text={"statistiikka"}/>
     </div>
   )
 };
