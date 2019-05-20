@@ -13,27 +13,25 @@ const ButtonBoard = (props) => {
 };
 
 const Statistics = (props) => {
-
-  let keskiarvo;
-  let positiivisia;
-  if((props.good || props.neutral || props.bad) !== 0)keskiarvo = (props.good-props.bad)/(props.good+props.neutral+props.bad);
-  if((props.good || props.neutral || props.bad) !== 0)positiivisia = ((props.good/(props.good+props.neutral+props.bad))*100)+"%";
   return(
-    <div>
-      <h2>statistiikka</h2>
-      <p>hyvä {props.good}</p>
-      <p>neutraali {props.neutral}</p>
-      <p>huono {props.bad}</p>
-      <p>yhteensä {props.good+props.neutral+props.bad}</p>
+    <React.Fragment>
       {
-        keskiarvo !== undefined &&
-        <p>keskiarvo {keskiarvo}</p>
+        (props.good || props.neutral || props.bad) !== 0 &&
+        <div>
+          <h2>statistiikka</h2>
+          <p>hyvä {props.good}</p>
+          <p>neutraali {props.neutral}</p>
+          <p>huono {props.bad}</p>
+          <p>yhteensä {props.good + props.neutral + props.bad}</p>
+          <p>keskiarvo {(props.good - props.bad) / (props.good + props.neutral + props.bad)}</p>
+          <p>positiivisia {((props.good / (props.good + props.neutral + props.bad)) * 100) + "%"}</p>
+        </div>
       }
       {
-        positiivisia !== undefined &&
-        <p>positiivisia {positiivisia}</p>
+        (props.good || props.neutral || props.bad) === 0 &&
+        <p>Ei yhtään palautetta annettu</p>
       }
-    </div>
+    </React.Fragment>
   );
 };
 
