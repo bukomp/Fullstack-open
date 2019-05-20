@@ -13,13 +13,27 @@ const ButtonBoard = (props) => {
 };
 
 const Statistics = (props) => {
+
+  let keskiarvo;
+  let positiivisia;
+  if((props.good || props.neutral || props.bad) !== 0)keskiarvo = (props.good-props.bad)/(props.good+props.neutral+props.bad);
+  if((props.good || props.neutral || props.bad) !== 0)positiivisia = ((props.good/(props.good+props.neutral+props.bad))*100)+"%";
   return(
-    <React.Fragment>
+    <div>
       <h2>statistiikka</h2>
-      <p>good {props.good}</p>
-      <p>neutral {props.neutral}</p>
-      <p>bad {props.bad}</p>
-    </React.Fragment>
+      <p>hyvä {props.good}</p>
+      <p>neutraali {props.neutral}</p>
+      <p>huono {props.bad}</p>
+      <p>yhteensä {props.good+props.neutral+props.bad}</p>
+      {
+        keskiarvo !== undefined &&
+        <p>keskiarvo {keskiarvo}</p>
+      }
+      {
+        positiivisia !== undefined &&
+        <p>positiivisia {positiivisia}</p>
+      }
+    </div>
   );
 };
 
