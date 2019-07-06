@@ -61,12 +61,26 @@ const App = () => {
     );
   };
 
+  const Total = (props) => {
+
+    let totalExercises = 0;
+    for(let g of props.parts){
+      totalExercises += g.exercises;
+    }
+
+    return(
+      <React.Fragment>
+        <p style={{fontWeight: "bold"}}>total of {totalExercises} exercises</p>
+      </React.Fragment>
+    );
+  };
 
   const Course = (props) => {
     return(
       <React.Fragment>
         <Header course={props.course.name}/>
         <Content parts={props.course.parts}/>
+        <Total  parts={props.course.parts}/>
       </React.Fragment>
     );
   }
