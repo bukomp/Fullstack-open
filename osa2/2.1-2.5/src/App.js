@@ -63,11 +63,7 @@ const App = () => {
 
   const Total = (props) => {
 
-    let totalExercises = 0;
-    for(let g of props.parts){
-      totalExercises += g.exercises;
-    }
-
+    const totalExercises = props.parts.reduce((a, c) => a+c.exercises,0);
     return(
       <React.Fragment>
         <p style={{fontWeight: "bold"}}>total of {totalExercises} exercises</p>
