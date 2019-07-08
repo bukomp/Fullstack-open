@@ -75,8 +75,12 @@ const App = () => {
       />
 
       <h2>Numbers</h2>
-      <Numbers personData={persons} newFilter={newFilter}/>
-l    </div>
+
+      <Numbers
+        personData={persons}
+        newFilter={newFilter}
+      />
+    </div>
   )
 
 }
