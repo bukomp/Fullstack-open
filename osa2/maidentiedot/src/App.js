@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import Filter from './components/Filter'
+import Countries from './components/Countries'
 
 function App() {
 
@@ -22,9 +23,14 @@ function App() {
 
   return (
     <React.Fragment>
-      Find Countries <Filter
+      Find Countries
+      <Filter
         onChange={onSearch}
         value={newSearch}
+      />
+      <Countries
+        countryData={countries}
+        newFilter={newSearch}
       />
     </React.Fragment>
   );
