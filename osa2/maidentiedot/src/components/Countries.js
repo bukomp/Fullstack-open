@@ -1,4 +1,5 @@
 import React from'react';
+import Weather from './Weather'
 
 const Countries = (props) => {
   let countries = [];
@@ -45,11 +46,26 @@ const Countries = (props) => {
             <ul>
               {languages}
             </ul>
-            <img src={countries[0].flag} style={{width:"20%", margin: "10px"}}/>
+
+            <img alt={"flag"} src={countries[0].flag} style={{width:"20%", margin: "10px"}}/>
+
+            <Weather
+              capital={countries[0].capital}
+            />
+
           </React.Fragment>
+      } else if (countries.length === 0){
+        display = "No countries found"
       } else {
         display = []
-        countries.forEach(country => {display.push(<div>{country.name}</div>)})
+        countries.forEach(country => {display.push(
+          <div key={country.name}>
+            <div>{country.name}</div>
+            <button value={country.name} onClick={props.filterChange}>
+              view
+            </button>
+          </div>
+        )})
       }
 
     }

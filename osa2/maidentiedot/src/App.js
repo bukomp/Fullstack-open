@@ -31,6 +31,7 @@ function App() {
       <Countries
         countryData={countries}
         newFilter={newSearch}
+        filterChange={onSearch}
       />
     </React.Fragment>
   );
