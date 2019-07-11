@@ -4,15 +4,14 @@ import Filter from './components/Filter'
 import NewPerson from './components/NewPerson'
 import {post, get, deleteLine, put} from './components/ServerCall'
 
-const App = () => {
 
+const App = () => {
 
   const [ newFilter, setFilter ] = useState('');
   const [ newName, setNewName ] = useState('');
   const [ newNumber, setNewNumber ] = useState('');
 
   const [ persons, setPersons] = useState([]);
-
 
   useEffect(()=>{
     get().then(r => {
@@ -82,7 +81,6 @@ const App = () => {
       })
     }
   }
-
 
   return (
     <React.Fragment>
