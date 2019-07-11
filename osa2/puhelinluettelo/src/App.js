@@ -1,25 +1,23 @@
 import React, { useState, useEffect } from 'react'
-import Filter from './components/Filter'
 import Numbers from './components/Numbers'
+import Filter from './components/Filter'
 import NewPerson from './components/NewPerson'
-import {post, get} from './components/ServerCall'
+import {post, get, deleteLine, put} from './components/ServerCall'
 
 const App = () => {
-  const [ persons, setPersons] = useState([]);
 
 
   const [ newFilter, setFilter ] = useState('');
   const [ newName, setNewName ] = useState('');
   const [ newNumber, setNewNumber ] = useState('');
 
+  const [ persons, setPersons] = useState([]);
+
+
   useEffect(()=>{
     get().then(r => {
-      console.log(r)
       setPersons(r.data)
-    }).catch(e =>{
-      console.log(e);
     })
-
   }, []);
 
 
@@ -46,25 +44,48 @@ const App = () => {
     if(!(persons.find((person) => {return person.name === newName})||false)){
 
       post({name:newName, number: newNumber}).then(r => {
-        console.log(r);
-      }).catch(e => {
-        console.log(e);
+        const tempArr = Array.from(persons);
+        tempArr.push(r.data)
+        setPersons(tempArr);
+        setNewName('');
+        setNewNumber('');
       })
 
-      const tempArr = persons;
-      tempArr.push({name:newName, number: newNumber})
-      setPersons(tempArr);
-      setNewName('');
-      setNewNumber('');
-    } else {
-      alert(`"${newName}" is already added to phonebook`);
+
+    } else if(window.confirm(`${newName} is already added. Replace the old number?`)) {
+      persons.forEach(person => {
+        if (person.name === newName){
+          put(person.id, {name: person.name, number: newNumber})
+          .then(r => {
+            get()
+              .then(r => {
+                setPersons(r.data)
+              })
+
+          })
+
+        }
+      })
+    }
+  }
+
+  const handleDelete = (e) => {
+    const id = e.target.id
+
+    if(window.confirm("Are you shure you want to delete this object?")){
+      deleteLine(id).then(r => {
+        get()
+          .then(r => {
+          setPersons(r.data)
+        })
+
+      })
     }
   }
 
 
-
   return (
-    <div>
+    <React.Fragment>
       <h2>Phonebook</h2>
 
       <Filter
@@ -88,12 +109,12 @@ const App = () => {
       />
 
       <h2>Numbers</h2>
-
       <Numbers
+        onDelete={handleDelete}
         personData={persons}
         newFilter={newFilter}
       />
-    </div>
+    </React.Fragment>
   )
 
 }

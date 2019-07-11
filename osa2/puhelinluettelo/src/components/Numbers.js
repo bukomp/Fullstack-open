@@ -1,25 +1,45 @@
 import React from "react";
 
 const Numbers = (props) => {
-  const persons = [];
 
-  if(props.personData !== undefined) {
-    if (props.newFilter) {
+
+  const tempArr = [];
+
+
+
+
+    if (props.newFilter !== '' && props.newFilter !== undefined && props.newFilter !== null) {
       props.personData.forEach(person => {
-        if (person.name.includes(props.newFilter)) persons.push(<li
-          key={person.name}>{`${person.name} ${person.number}`}</li>);
+        if (person.name.includes(props.newFilter)) tempArr.push(
+          <div key={person.name}>
+            <div>
+              {`${person.name} ${person.number}`}
+            </div>
+            <button id={person.id} name={"delete"} onClick={props.onDelete}>
+              delete
+            </button>
+          </div>
+
+        );
       })
     } else {
       props.personData.forEach(person => {
-        persons.push(<li key={person.name}>{`${person.name} ${person.number}`}</li>);
+        tempArr.push(
+          <div key={person.name}>
+            <div>
+              {`${person.name} ${person.number}`}
+            </div>
+            <button id={person.id} name={"delete"} onClick={props.onDelete}>
+              delete
+            </button>
+          </div>
+        );
       })
     }
-  }
+
   return(
-    <ul style={{listStyleType: "none"}}>
-      {persons}
-    </ul>
+      tempArr
   );
-}
+};
 
 export default Numbers;
