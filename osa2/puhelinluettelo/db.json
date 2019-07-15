@@ -1,24 +1,14 @@
 {
   "persons": [
     {
-      "name": "qweqwe",
-      "number": "324",
-      "id": 1
+      "name": "Anton",
+      "number": "42",
+      "id": 6
     },
     {
-      "name": "wqeqwe",
-      "number": "324",
-      "id": 2
-    },
-    {
-      "name": "wetrfhnfgdh",
-      "number": "324",
-      "id": 3
-    },
-    {
-      "name": "w",
-      "number": "2342342",
-      "id": 4
+      "name": "Edvard",
+      "number": "123123",
+      "id": 8
     }
   ]
 }
