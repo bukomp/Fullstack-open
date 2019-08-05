@@ -1,20 +1,34 @@
 const express = require('express')
+const morgan = require('morgan')
 const fs = require('fs')
+
 const app = express()
 
-let persons;
+app.use(express.json())
 
-const readFile = () => {
-  fs.readFile('./db', 'utf-8', (err, data)=>{
-  persons = JSON.parse(data).persons;
-  console.log(persons);
-  })
+
+morgan.token('data', req => {
+  if(req.method === 'POST')return JSON.stringify(req.body)
+})
+
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :data'))
+
+
+let persons = [
+    {
+      name:"Edvard",
+      number:"123123",
+      id:0
+    }
+  ];
+
+const genRandNum = (max, min) => {
+  return Math.floor(Math.random() * (+max - +min + 1)) + +min;
 }
-
 
 app.delete('/api/*', (req,  res) => {
   const url_parts = req.path.split('/');
-  console.log(url_parts);
+  //console.log(url_parts);
   switch(url_parts[2]){
     case "persons":
       let response;
@@ -30,9 +44,10 @@ app.delete('/api/*', (req,  res) => {
               message: `Contact with id:${+url_parts[3]} has been removed`,
               data: persons.filter(i => i.id !== +url_parts[3])
             };
-            fs.writeFile('./db', JSON.stringify({persons:persons.filter(i => i.id !== +url_parts[3])}), err => {
+            /*fs.writeFile('./db', JSON.stringify({persons:persons.filter(i => i.id !== +url_parts[3])}), err => {
               if (err) throw err;
-            })
+            })*/
+            persons = persons.filter(i => i.id !== +url_parts[3])
             res.json(response);
           }
         }):res.status(404).json({
@@ -46,7 +61,7 @@ app.delete('/api/*', (req,  res) => {
 
 app.get('/api/*', (req, res) => {
   const url_parts = req.path.split('/');
-  console.log(url_parts);
+  //console.log(url_parts);
   switch(url_parts[2]){
     case "persons":
       let response;
@@ -54,7 +69,7 @@ app.get('/api/*', (req, res) => {
       url_parts[3]?
         persons.some(person=>{
         if(person.id === +url_parts[3]){
-          console.log(person.id);
+          //console.log(person.id);
           response = person;
           return true;
         }
@@ -84,6 +99,43 @@ app.get('/info', (req, res) => {
     `
     res.send(info_page);
 })
+
+app.post('/api/persons', (req, res) => {
+
+  if(Object.keys(req.body).length > 0) {
+
+    //console.log(req.body);
+    const body = JSON.parse(JSON.stringify(req.body))
+    //console.log(body.number);
+
+    if(persons.some(obj => {if(obj.name === body.name)return true})){
+      res.status(409).json({
+        error: "New contact name should differ from other contacts"
+      })
+    } else if(body.name === undefined || body.number === undefined){
+      res.status(400).json({
+        error: "Request must contain name and number information"
+      })
+    } else {
+      //body.id = persons[persons.length-1].id+1;
+      body.id = genRandNum("9999", "0000");
+      persons.push(body);
+      const response = {
+        message: `New contact has been added`,
+        data: persons
+      };
+      res.send(response)
+      //persons.push()
+    }
+  }
+  else {
+    res.status(400).json({
+      error: "Request body is empty"
+    })
+  }
+})
+
+
 
 const PORT = 3001
 app.listen(PORT, () => {
