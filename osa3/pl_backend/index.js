@@ -44,9 +44,6 @@ app.delete('/api/*', (req,  res) => {
               message: `Contact with id:${+url_parts[3]} has been removed`,
               data: persons.filter(i => i.id !== +url_parts[3])
             };
-            /*fs.writeFile('./db', JSON.stringify({persons:persons.filter(i => i.id !== +url_parts[3])}), err => {
-              if (err) throw err;
-            })*/
             persons = persons.filter(i => i.id !== +url_parts[3])
             res.json(response);
           }
