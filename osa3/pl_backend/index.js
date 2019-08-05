@@ -1,17 +1,19 @@
 const express = require('express')
 const morgan = require('morgan')
 const fs = require('fs')
+const cors = require('cors')
 
 const app = express()
 
 app.use(express.json())
-
 
 morgan.token('data', req => {
   if(req.method === 'POST')return JSON.stringify(req.body)
 })
 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :data'))
+
+app.use(cors())
 
 
 let persons = [
@@ -29,7 +31,7 @@ const genRandNum = (max, min) => {
 app.delete('/api/*', (req,  res) => {
   const url_parts = req.path.split('/');
   //console.log(url_parts);
-  switch(url_parts[2]){
+  switch(url_parts[2]){                                             //I added switches to some calls in case there will be more databases
     case "persons":
       let response;
 
@@ -92,7 +94,7 @@ app.get('/info', (req, res) => {
       </div>
       <div>
         ${new Date()}
-      </div>
+      </div> 
     `
     res.send(info_page);
 })
@@ -134,7 +136,7 @@ app.post('/api/persons', (req, res) => {
 
 
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
